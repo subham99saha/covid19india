@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Coronavirus Outbreak In India</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<style>
+body,h1 {font-family: "Raleway", Arial, sans-serif}
+</style>
+<body style='padding:5%;'>
+<script>
+getData();
+async function getData() {
+	const response = await fetch('/api');
+	const data = await response.json();
+	
+	for (item of data) {
+		const root = document.createElement('div');
+		const ans1 = document.createElement('div');
+		const ans2 = document.createElement('div');
+		const ans3 = document.createElement('div');
+		const ans4 = document.createElement('div');
+		const date = document.createElement('div');
+		
+		root.style.padding = "2%";
+		date.style.fontWeight = "bold";
+		
+		var sanitizeHTML = function (str) {
+			var temp = document.createElement('div');
+			temp.textContent = str;
+			return temp.innerHTML;
+		};
+		
+		var ques1 = 'Experiencing Cough, Fever, Difficulty in Breathing';
+		var ques2 = 'Had Diabetes, Hypertension, Lung Disease, Heart Disease';
+		var ques3 = 'Travelled anywhere internationally in the last 28-45 days';
+		var ques4 = 'Recently interacted with someone who has tested positive for COVID-19 without protective gear';
+		
+		ans1.innerHTML = '<span style="color:red;"><b>' + ques1 + '</b></span> : ' + sanitizeHTML(item.ans1);		
+		ans2.innerHTML = '<span style="color:green;"><b>' + ques2 + '</b></span> : ' + sanitizeHTML(item.ans2);		
+		ans3.innerHTML = '<span style="color:blue;"><b>' + ques3 + '</b></span> : ' + sanitizeHTML(item.ans3);		
+		ans4.innerHTML = '<span style="color:grey;"><b>' + ques4 + '</b></span> : ' + sanitizeHTML(item.ans4);
+		const dateString = new Date(item.timestamp).toLocaleString();
+		date.innerHTML = sanitizeHTML(dateString);
+		
+		root.append(date, ans1, ans2, ans3, ans4);
+		document.body.append(root);
+		
+	}
+	console.log(data);
+}
+</script>
+<h1>Database</h1>
+<p><a href='/'><b><i><< Home</i></b></a></p>
+</body>
+<script>
+ 
+
+</script>
+</html>

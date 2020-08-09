@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Coronavirus Outbreak In India</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<style>
+body,h1 {font-family: "Raleway", Arial, sans-serif}
+</style>
+<body style=''>
+<script>
+/*function makeid(length) {
+   var result           = '';
+   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
+
+if(!(localStorage.getItem("token1")&&localStorage.getItem("token2"))){
+	localStorage.setItem("token1", makeid(10));
+	localStorage.setItem("token2", makeid(10));
+}*/
+
+
+$.getJSON('https://api.covid19india.org/data.json', function(data) {         
+    console.log(data.statewise);
+    console.log(data.statewise[1]);
+    console.log(data.statewise[1].state);	
+	
+	var tbl = document.getElementById('tbl');
+	for(var i = 0; i < Object.keys(data.statewise).length ; i++){
+		var x = tbl.insertRow();
+		var a = ['state','confirmed','active','recovered','deaths'];
+		for(var j = 0; j < a.length ; j++){	
+			x.insertCell(j);
+			tbl.rows[i+1].cells[j].innerHTML = data.statewise[i][ a[j] ];
+			tbl.rows[i+1].cells[j].style.padding = "2% 0%";
+			if(a[j]=='state'){
+				tbl.rows[i+1].cells[j].innerHTML += '<sup>[' + i + ']</sup>';
+				tbl.rows[i+1].cells[j].style.textAlign = "left";				
+			}
+		}	
+	}
+	    
+});
+
+async function submitcvdchk(){
+	var ans1, ans2, ans3, ans4;
+
+	if (document.getElementById('q1yes').checked) {
+	  ans1 = document.getElementById('q1yes').value;
+	}else{
+	  ans1 = document.getElementById('q1no').value;
+	}
+	 
+	if (document.getElementById('q2yes').checked) {
+	  ans2 = document.getElementById('q2yes').value;
+	}else{
+	  ans2 = document.getElementById('q2no').value;
+	}
+	  
+	if (document.getElementById('q3yes').checked) {
+	  ans3 = document.getElementById('q3yes').value;
+	}else{
+	  ans3 = document.getElementById('q3no').value;
+	}
+	 
+	if (document.getElementById('q4yes').checked) {
+	  ans4 = document.getElementById('q4yes').value;
+	}else{
+	  ans4 = document.getElementById('q4no').value;
+	}
+
+	//data = {'ans1' : ans1 , 'ans2' : ans2, 'ans3' : ans3 , 'ans4' : ans4, 'token1' : localStorage.getItem("token1") , 'token2' : localStorage.getItem("token2")}; 
+	data = {'ans1' : ans1 , 'ans2' : ans2 , 'ans3' : ans3 , 'ans4' : ans4}; 
+	const options = {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(data)
+	};
+	const response = await fetch('/api', options);
+	const json = await response.json();
+	console.log(json);
+}
+
+async function submitstnm(){
+	//var num = 13;
+	var num = document.getElementById('stnm').value;
+	const api_url = 'weather/' + num;
+	const response = await fetch(api_url);
+	const json = await response.json();
+	console.log(json);
+}
+ 
+</script>
+<div class='container;' style='width:; text-align:center;'>
+	<h1 style='/*font-size:6vw;*/ padding:3% 3%;'>covid19india.org</h1>
+	<p style='padding:6% 4%; font-weight:bold;'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+
+	<div style='/*text-align:center; width:100%; background:; font-size:2.5vw;*/'>
+
+		<table class='table;' id='tbl' style='display:inline-block; text-align:right; background:; width:; padding:2% 4%;'>
+		<tr>
+			<th style='/*padding:2% 4%;*/ width:40%; text-align:left;'>State/UT</th>
+			<th style='/*padding:2% 4%;*/ width:15%; text-align:right; color:red;'>Cnfrmd</th>
+			<th style='/*padding:2% 4%;*/ width:15%; text-align:right; color:blue;'>Actv</th>
+			<th style='/*padding:2% 4%;*/ width:15%; text-align:right; color:green;'>Rcvrd</th>
+			<th style='/*padding:2% 4%;*/ width:15%; text-align:right;'>Dcsd</th>
+		</tr>
+		</table>
+
+	</div>
+	<div style='text-align:left; padding:4% 4%;'>
+		<h2>Quiz</h2>
+		<p><b>Are you experiencing any of the following symptoms?</b><br>Cough, Fever, Difficulty in Breathing</p>
+		<p>
+		<input type="radio" id="q1yes" name="ans1" value="yes" checked> <label>Yes</label><br>
+		<input type="radio" id="q1no" name="ans1" value="no"> <label>No</label>
+		</p>
+		<p><b>Have you ever had any of the following?</b><br>Diabetes, Hypertension, Lung Disease, Heart Disease</p>
+		<p>
+		<input type="radio" id="q2yes" name="ans2" value="yes" checked> <label>Yes</label><br>
+		<input type="radio" id="q2no" name="ans2" value="no"> <label>No</label>
+		</p>
+		<p><b>Have you travelled anywhere internationally in the last 28-45 days?</b></p>
+		<p>
+		<input type="radio" id="q3yes" name="ans3" value="yes" checked> <label>Yes</label><br>
+		<input type="radio" id="q3no" name="ans3" value="no"> <label>No</label>
+		</p>
+		<p><b>Does any of the following apply to you?</b>
+		<p>I have recently interacted or lived with someone who has tested positive for COVID-19</p>
+		<p>I am a healthcare worker and I examined a COVID-19 confirmed case without protective gear</p>
+		</p>
+		<p>
+		<input type="radio" id="q4yes" name="ans4" value="yes" checked> <label>Yes</label><br>
+		<input type="radio" id="q4no" name="ans4" value="no"> <label>No</label>
+		</p>
+		<p><button id='submitcvdchk' onclick='submitcvdchk()'>Submit</button></p>
+		<p><a href='/logs'><b><i>>> Check log</i></b></a></p>
+	</div>
+	<div style='text-align:left; padding:4% 4%;'>
+		<h2>State details</h2>
+		<p><b>Enter state number:</b></p>
+		<p><input type=number id=stnm name=statenum value=0 style=""/> <button id='submitstnm' style="" onclick='submitstnm()'>Submit</button></p>
+	</div>
+</div>
+</body>
+<script>
+ 
+
+</script>
+</html>
