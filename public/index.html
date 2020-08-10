@@ -96,9 +96,8 @@ async function submitcvdchk(){
 }
 
 async function submitstnm(){
-	//var num = 13;
 	var num = document.getElementById('stnm').value;
-	const api_url = 'weather/' + num;
+	const api_url = 'stwisedet/' + num;
 	const response = await fetch(api_url);
 	const json = await response.json();
 	console.log(json);
@@ -152,8 +151,10 @@ async function submitstnm(){
 	</div>
 	<div style='text-align:left; padding:4% 4%;'>
 		<h2>State details</h2>
-		<p><b>Enter state number:</b></p>
+		<p><b>Enter state number:</b> (from table)</p>
 		<p><input type=number id=stnm name=statenum value=0 style=""/> <button id='submitstnm' style="" onclick='submitstnm()'>Submit</button></p>
+		<p><i>Check response in console...</i></p>
+		
 	</div>
 </div>
 </body>
