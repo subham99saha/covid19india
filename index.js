@@ -4,7 +4,10 @@ const fetch = require('node-fetch');
 const cookieParser = require('cookie-parser');
 
 const app = express();
-app.listen(5000, () => console.log('listening at 5000'));
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
+	console.log('Starting server at ' + port));
+}	
 app.use(express .static('public'));
 app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
